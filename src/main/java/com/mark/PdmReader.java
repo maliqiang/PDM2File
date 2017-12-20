@@ -17,11 +17,7 @@ import org.dom4j.DocumentException;
  */
 public class PdmReader {
     public static void main(String[] args) throws DocumentException {
-//        if (args.length < 1) {
-//            throw new IllegalArgumentException("第一个参数必须是pdm文件路径");
-//        }
         String fileName = "F:\\doc\\数据库模型\\物理数据模型.pdm";
-//        String fileName = args[0];
         PdmUtil.parse2Console(fileName);
     }
 }

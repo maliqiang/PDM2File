@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.fusesource.jansi.Ansi.Color.*;
+import static org.fusesource.jansi.Ansi.ansi;
 
 /**
  * pdm读取工具类
@@ -29,7 +30,13 @@ public class PdmUtil {
      * @throws DocumentException
      */
     public static void parse2Console(String fileName) throws DocumentException {
-        System.out.println(Ansi.ansi().fg(RED).a("PDM文件路径:") + Ansi.ansi().fg(Ansi.Color.GREEN).a(fileName).toString());
+        System.out.println(ansi().fg(RED).a("PDM文件路径:") + ansi().fg(Ansi.Color.GREEN).a(fileName).toString());
+        System.out.println(ansi().fg(YELLOW).a("说明：\n"));
+        System.out.println("1、表标题分别为: 列名称|类型|长度|是否为主键|是否允许为空|备注");
+        System.out.println("2、目前仅支持对pdm文件数据的简单解析");
+        System.out.println();
+
+
 
         long start = System.currentTimeMillis();
 
@@ -71,8 +78,8 @@ public class PdmUtil {
             tableElements.addAll(tablesEle.elements(new QName("Table", oNamespace)));
         }
 
-        System.out.println(Ansi.ansi().fg(RED).a("表总数量:") + Ansi.ansi().fg(GREEN).a(tableElements.size()).toString());
-        System.out.println(Ansi.ansi().fgDefault().a(" "));
+        System.out.println(ansi().fg(RED).a("表总数量:") + ansi().fg(GREEN).a(tableElements.size()).toString());
+        System.out.println(ansi().fgDefault().a(" "));
 
         int i = 0;
         for (Element tableElement : tableElements) {
@@ -83,11 +90,11 @@ public class PdmUtil {
             String ChineseTableName = name.getText();
             //表名
             String tableName = code.getText();
-            System.out.println("========"
-                    + Ansi.ansi().fg(BLUE).a("NO." + i)
-                    + Ansi.ansi().fg(RED).a(" " + ChineseTableName + " ")
-                    + Ansi.ansi().fg(YELLOW).a("(" + tableName + ")")
-                    + Ansi.ansi().fgDefault().a("======"));
+            System.out.println("======== "
+                    + ansi().fg(BLUE).a("NO." + i)
+                    + ansi().fg(RED).a(" " + ChineseTableName + " ")
+                    + ansi().fg(YELLOW).a("(" + tableName + ")")
+                    + ansi().fgDefault().a(" ========"));
             //解析主键
             Element primaryKeyEle = tableElement.element(new QName("PrimaryKey", cNamespace));
             List<String> pkIds = new ArrayList<>();
@@ -126,12 +133,12 @@ public class PdmUtil {
 
                 System.out.print(getPadString(ccode.getText(), 20));
                 System.out.print(getPadString(getTextFromElement(cDataType), 15));
-                System.out.print(getPadString(getTextFromElement(cLength), 7));
+//                System.out.print(getPadString(getTextFromElement(cLength), 7));
 
                 if (pkColumnIds.contains(columnId)) {
-                    System.out.print("主键\t");
+                    System.out.print(" 主键\t");
                 } else {
-                    System.out.print("\t\t");
+                    System.out.print("\t\t\t");
                 }
                 //是否可为空
                 if (nullable != null) {
@@ -150,11 +157,7 @@ public class PdmUtil {
         }
 
         System.out.println("=========================================================");
-        System.out.println("转换共耗时:" + Ansi.ansi().fg(RED).a((System.currentTimeMillis() - start) / 1000F) + Ansi.ansi().fg(DEFAULT).a("s"));
-        System.out.println();
-        System.out.println(Ansi.ansi().fg(YELLOW).a("说明：\n"));
-        System.out.println("1、表标题分别为: 列名称|类型|长度|是否为主键|是否允许为空|备注");
-        System.out.println("2、√ 表示主键");
+        System.out.println("转换共耗时:" + ansi().fg(RED).a((System.currentTimeMillis() - start) / 1000F) + ansi().fg(DEFAULT).a("s"));
         System.out.println();
     }
 
